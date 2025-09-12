@@ -5,13 +5,25 @@ import { useModalQueue } from './components/ModalProvider';
 function App() {
   const { modals, queueModal } = useModalQueue()
 
+
+  // const addModal = () => {
+  //   const newModal = (
+  //     <div>
+  //       <h1>New Modal</h1>
+  //       <p>This is a new modal window.</p>
+  //     </div>
+  //   )
+  //   queueModal({ content: newModal, onClose: () => { console.log('Modal closed'); } });
+  // }
+
   return (
     <>
      HELLO
      <div onClick={() => {
-      console.log('Stuff');
-      queueModal('Stuff')}} >
-      queue
+      // addModal();
+      queueModal({content: 'hihihi'})
+     }}>
+       Open Modal
      </div>
     </>
   )

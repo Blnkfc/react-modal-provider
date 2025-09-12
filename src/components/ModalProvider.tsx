@@ -1,22 +1,22 @@
-import { createContext, useContext } from 'react';
+import React, { createContext, useContext } from 'react';
 import { useModalContext, type ModalContent, type ModalQueueItem } from '../hooks/useModalContext';
 import { DefaultModalWindow } from './DefaultModalWindow';
 
 export interface ModalProviderProps {
   modals: ModalQueueItem[];
-  queueModal: (modal: ModalContent) => void;
+  queueModal: ({ content, onClose }: { content: ModalContent; onClose?: (value?: any) => any }) => void;
 }
 
 const ModalContext = createContext<ModalProviderProps | undefined>(undefined);
 
-export const ModalProvider = ({ children, styles }: { children: React.ReactNode, styles?: React.CSSProperties }) => {
+export const ModalProvider = ({ children, styles }: { children: React.ReactNode; styles?: React.CSSProperties }) => {
   const { currentModals, queueModal } = useModalContext();
   console.log(
     'currentModals',
     currentModals,
     Array.isArray(currentModals),
     currentModals.length > 0,
-    currentModals.length,
+    currentModals.length
   );
 
   return (
@@ -33,15 +33,12 @@ export const ModalProvider = ({ children, styles }: { children: React.ReactNode,
           pointerEvents: 'none',
           width: '100vw',
           height: '100vh',
-          // display: 'flex',
-          // alignItems: 'center',
-          // justifyContent: 'center',
         }}
       >
         {currentModals.length > 0 ? (
           <>
             {currentModals.map((modal) => {
-              switch (typeof modal.content) {
+              switch (typeof modal.modal.content) {
                 case 'string':
                   return (
                     <div
@@ -50,10 +47,40 @@ export const ModalProvider = ({ children, styles }: { children: React.ReactNode,
                         zIndex: 100 + modal.layer,
                       }}
                     >
-                      <DefaultModalWindow content={modal.content} onClose={modal.onClose} styles={styles} />
+                      <DefaultModalWindow content={modal.modal.content} onClose={modal.onClose} styles={styles} />
                     </div>
                   );
                 default:
+                  if (React.isValidElement(modal.modal.content)) {
+                    return (
+                      <div
+                        key={modal.id}
+                        style={{
+                          zIndex: 100 + modal.layer,
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          width: '100vw',
+                          height: '100vh',
+                        }}
+                      >
+                        <div
+                          onClick={modal.onClose}
+                          style={{
+                            position: 'absolute',
+                            top: 0,
+                            left: 0,
+                            backgroundColor: 'rgba(0,0,0,0.5)',
+                            width: '100%',
+                            height: '100%',
+                            pointerEvents: 'auto',
+                            ...styles,
+                          }}
+                        ></div>
+                        <div style={{ display: 'absolute', zIndex: 2 }}>{modal.modal.content}</div>
+                      </div>
+                    );
+                  }
                   return <></>;
               }
             })}
@@ -71,4 +98,4 @@ export const useModalQueue = () => {
     throw new Error('useModalQueue must be used within a ModalProvider');
   }
   return context;
-}
+};

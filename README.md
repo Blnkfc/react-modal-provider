@@ -73,9 +73,7 @@ And set props for your component as:
 const DefaultOverrideExample: React.FC<PropsWithChildren<{} & ModalGeneric>> = ({ children, onClose, styles })
 ```
 
->children 
-prop will br used as a slot for content you pass to the modal and 
->onClose
-will execute closing and additional callback, if you added them from _queueModal_
+```children``` prop will be used as a slot for content you pass to the modal and 
+```onClose``` will execute closing and additional callback, if you added them from _queueModal_
 
 Every modal will automatically open on top of the old one and close when you press on the background.

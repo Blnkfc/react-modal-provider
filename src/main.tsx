@@ -3,10 +3,11 @@ import { createRoot } from 'react-dom/client';
 import './index.css';
 import App from './App.tsx';
 import { ModalProvider } from './components/ModalProvider.tsx';
+import { DefaultOverrideExample } from './components/DefaultOverrideExample.tsx';
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
-    <ModalProvider>
+    <ModalProvider styles={{ background: 'red'}} ModalOverride={DefaultOverrideExample}>
       <App />
     </ModalProvider>
   </StrictMode>

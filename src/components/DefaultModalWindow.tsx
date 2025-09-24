@@ -1,8 +1,16 @@
-import './DefaultModal.css'
+// import React from 'react';
+import './DefaultModal.css';
+import type { ModalGeneric } from '../interfaces/types';
 
-export const DefaultModalWindow = ({ content, onClose, styles }: { content: string; onClose: () => void; styles?: React.CSSProperties }) => {
-    console.log('onClose', onClose);
-    
+
+
+export const DefaultModalWindow = ({
+  content,
+  onClose,
+  styles,
+}: ModalGeneric & { content: string }) => {
+  // console.log('check modal', Overrides && React.isValidElement(Overrides), Overrides);
+
   return (
     <>
       <div
@@ -15,13 +23,9 @@ export const DefaultModalWindow = ({ content, onClose, styles }: { content: stri
           width: '100%',
           height: '100%',
           pointerEvents: 'auto',
-          ...styles
         }}
       ></div>
-      <div
-        className="default-modal"
-        style={styles}
-      >
+      <div className="default-modal" style={styles}>
         {content}
       </div>
     </>

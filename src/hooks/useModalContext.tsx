@@ -27,6 +27,8 @@ export const useModalContext = (): {
    * @param id The ID of the modal to close.
    */
   const closeGivenModal = (id: string) => {
+    console.log('closeGivenModal', id);
+    
     setActiveModals(activeModals.filter((am: ModalQueueItem) => am.id !== id));
   };
 

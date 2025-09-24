@@ -1,6 +1,7 @@
-import React, { createContext, useContext } from 'react';
+import React, { createContext, useContext, type PropsWithChildren } from 'react';
 import { useModalContext, type ModalContent, type ModalQueueItem } from '../hooks/useModalContext';
 import { DefaultModalWindow } from './DefaultModalWindow';
+import type { ModalGeneric } from '../interfaces/types';
 
 export interface ModalProviderProps {
   modals: ModalQueueItem[];
@@ -9,7 +10,7 @@ export interface ModalProviderProps {
 
 const ModalContext = createContext<ModalProviderProps | undefined>(undefined);
 
-export const ModalProvider = ({ children, styles }: { children: React.ReactNode; styles?: React.CSSProperties }) => {
+export const ModalProvider = ({ children, styles, ModalOverride }: { children: React.ReactNode; styles?: React.CSSProperties; ModalOverride?: React.ComponentType<PropsWithChildren<ModalGeneric>> }) => {
   const { currentModals, queueModal } = useModalContext();
   console.log(
     'currentModals',
@@ -33,6 +34,10 @@ export const ModalProvider = ({ children, styles }: { children: React.ReactNode;
           pointerEvents: 'none',
           width: '100vw',
           height: '100vh',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          // backgroundColor: 'red',
         }}
       >
         {currentModals.length > 0 ? (
@@ -45,9 +50,14 @@ export const ModalProvider = ({ children, styles }: { children: React.ReactNode;
                       key={modal.id}
                       style={{
                         zIndex: 100 + modal.layer,
+                        pointerEvents: 'auto',
                       }}
                     >
-                      <DefaultModalWindow content={modal.modal.content} onClose={modal.onClose} styles={styles} />
+                      {ModalOverride ? (
+                        <ModalOverride  onClose={modal.onClose} styles={styles}>{modal.modal.content}</ModalOverride>
+                      ) : (
+                        <DefaultModalWindow content={modal.modal.content} onClose={modal.onClose} styles={styles} />
+                      )}
                     </div>
                   );
                 default:

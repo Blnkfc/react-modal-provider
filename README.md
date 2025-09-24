@@ -44,5 +44,38 @@ const showModal2 = () => {
 }
 
 ```
+## Customization
+You can customize your modal two different ways (_excluding passing a modal into queueModal_)
+
+### Inline styles
+Just pass the styles into ModalProvider component, and they will be applied to the default modal component:
+```
+<ModalProvider styles={{ background: 'red'}}>
+  <App />
+</ModalProvider>
+```
+
+### Custom default component
+You can also create a component for provider to use by default using ``` ModalOverride ``` prop like so:
+```
+<ModalProvider ModalOverride={DefaultOverrideExample}>
+  <App />
+</ModalProvider>
+```
+
+Inside your component, import ```ModalGeneric``` type
+```
+import type { ModalGeneric } from "react-modal-provider";
+```
+
+And set props for your component as:
+```
+const DefaultOverrideExample: React.FC<PropsWithChildren<{} & ModalGeneric>> = ({ children, onClose, styles })
+```
+
+>children 
+prop will br used as a slot for content you pass to the modal and 
+>onClose
+will execute closing and additional callback, if you added them from _queueModal_
 
 Every modal will automatically open on top of the old one and close when you press on the background.

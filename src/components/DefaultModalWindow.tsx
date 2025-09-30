@@ -25,7 +25,25 @@ export const DefaultModalWindow = ({
           pointerEvents: 'auto',
         }}
       ></div>
-      <div className="default-modal" style={styles}>
+      <div style={{
+        position: 'absolute',
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: 'white',
+        borderRadius: '8px',
+        boxShadow: '0 4px 8px rgba(0, 0, 0, 0.2)',
+        padding: '16px',
+        maxWidth: '500px',
+        margin: '0 auto',
+        color: 'black',
+        minWidth: '100px',
+        minHeight: '100px',
+        left: '50%',
+        top: '50%',
+        transform: 'translate(-50%, -50%)',
+        ...styles
+      }} >
         {content}
       </div>
     </>

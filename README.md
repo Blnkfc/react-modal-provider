@@ -2,7 +2,7 @@
 
 A simple tool for organized modals in your application.
 
-Usage:
+## Usage:
 
 1. Import the proivider component
 
@@ -45,7 +45,14 @@ const showModal2 = () => {
 
 ```
 ## Customization
-You can customize your modal two different ways (_excluding passing a modal into queueModal_)
+Excluding custom modals, you can customise styles of the modal differently:
+
+### Options object 
+You can pass options object right into queueModal function like so: 
+```
+  queueModal({content: 'hihihi', onClose: () => { console.log('Modal closed') }, options: { position: 'top-right' } });
+```
+
 
 ### Inline styles
 Just pass the styles into ModalProvider component, and they will be applied to the default modal component:

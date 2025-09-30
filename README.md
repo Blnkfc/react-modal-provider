@@ -1,4 +1,4 @@
-# React Modal Provider
+# @blnkfc/react-modal-manager
 
 A simple tool for organized modals in your application.
 
@@ -77,3 +77,7 @@ const DefaultOverrideExample: React.FC<PropsWithChildren<{} & ModalGeneric>> = (
 ```onClose``` will execute closing and additional callback, if you added them from _queueModal_
 
 Every modal will automatically open on top of the old one and close when you press on the background.
+
+
+## License
+MIT © 2025 Pavlo Zabuha

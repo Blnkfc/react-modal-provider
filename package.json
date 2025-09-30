@@ -1,13 +1,15 @@
 {
-  "name": "react-modal-provider",
-  "private": true,
-  "version": "0.1.0",
+  "name": "@blnkfc/react-modal-manager",
+  "version": "0.1.1",
   "main": "dist/index.cjs",
   "module": "dist/index.js",
   "types": "dist/index.d.ts",
   "files": [
     "dist"
   ],
+  "author": "Pavlo Z. <pavlinus11v@gmail.com>",
+  "license": "MIT",
+  "keywords": ["modal", "manager"],
   "type": "module",
   "scripts": {
     "dev": "vite",

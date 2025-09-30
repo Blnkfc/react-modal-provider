@@ -16,12 +16,13 @@ function App() {
   //   queueModal({ content: newModal, onClose: () => { console.log('Modal closed'); } });
   // }
 
+
   return (
     <>
      HELLO
      <div onClick={() => {
       // addModal();
-      queueModal({content: 'hihihi'})
+      queueModal({content: 'hihihi', options: { position: 'top-right' }, onClose: () => { console.log('Modal closed'); } });
      }}>
        Open Modal
      </div>

@@ -1,11 +1,11 @@
 import React, { createContext, useContext, type PropsWithChildren } from 'react';
 import { useModalContext, type ModalContent, type ModalQueueItem } from '../hooks/useModalContext';
 import { DefaultModalWindow } from './DefaultModalWindow';
-import type { ModalGeneric } from '../interfaces/types';
+import type { ModalGeneric, ModalOptions } from '../interfaces/types';
 
 export interface ModalProviderProps {
   modals: ModalQueueItem[];
-  queueModal: ({ content, onClose }: { content: ModalContent; onClose?: (value?: any) => any }) => void;
+  queueModal: ({ content, onClose, options }: { content: ModalContent; onClose?: (value?: any) => any; options?: ModalOptions }) => void;
 }
 
 const ModalContext = createContext<ModalProviderProps | undefined>(undefined);
@@ -37,7 +37,6 @@ export const ModalProvider = ({ children, styles, ModalOverride }: { children: R
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
-          // backgroundColor: 'red',
         }}
       >
         {currentModals.length > 0 ? (
@@ -56,7 +55,7 @@ export const ModalProvider = ({ children, styles, ModalOverride }: { children: R
                       {ModalOverride ? (
                         <ModalOverride  onClose={modal.onClose} styles={styles}>{modal.modal.content}</ModalOverride>
                       ) : (
-                        <DefaultModalWindow content={modal.modal.content} onClose={modal.onClose} styles={styles} />
+                        <DefaultModalWindow content={modal.modal.content} onClose={modal.onClose} styles={styles} options={modal.options} />
                       )}
                     </div>
                   );

@@ -1,11 +1,13 @@
 import { useEffect, useMemo, useState } from 'react';
 import { useSessionStorage } from './useSessionStorage';
+import type { ModalOptions } from '../interfaces/types';
 
 export type ModalContent = React.ReactNode | string;
 
 export type ModalContentCombined = {
   content: ModalContent;
   onClose?: (value?: any) => any;
+  options?: ModalOptions;
 }
 
 export interface ModalQueueItem {
@@ -13,10 +15,11 @@ export interface ModalQueueItem {
   modal: ModalContentCombined;
   layer: number;
   onClose: () => void;
+  options?: ModalOptions;
 }
 
 export const useModalContext = (): {
-  queueModal: ({ content, onClose }: { content: ModalContent; onClose?: (value?: any) => any }) => void;
+  queueModal: ({ content, onClose, options }: { content: ModalContent; onClose?: (value?: any) => any; options?: ModalOptions }) => void;
   currentModals: ModalQueueItem[];
 } => {
   const [activeModals, setActiveModals] = useSessionStorage('modals', []);
@@ -38,8 +41,9 @@ export const useModalContext = (): {
    * Adds a new modal to the queue.
    * @param content Content of the modal, can be string for default modal, or ReactNode for custom modal.
    * @param onClose Optional callback function to be called when the modal is closed.
+   * @param options Optional settings for modal appearance and behavior.
    */
-  const queueModal = ({ content, onClose }: ModalContentCombined) => {
+  const queueModal = ({ content, onClose, options }: ModalContentCombined) => {
     const id = Date.now().toString();
     const newModal: ModalQueueItem = {
       id: id,
@@ -49,6 +53,7 @@ export const useModalContext = (): {
         onClose?.();
         closeGivenModal(id);
       },
+      options: options,
     };
 
     const updatedModals = [...activeModals, newModal];

@@ -7,7 +7,8 @@ import { DefaultOverrideExample } from './components/DefaultOverrideExample.tsx'
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
-    <ModalProvider ModalOverride={DefaultOverrideExample}>
+    {/* <ModalProvider ModalOverride={DefaultOverrideExample}> */}
+    <ModalProvider >
       <App />
     </ModalProvider>
   </StrictMode>

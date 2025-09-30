@@ -1,5 +1,5 @@
 {
-  "name": "@blnkfc/react-modal-manager",
+  "name": "@qnit/react-modal-manager",
   "version": "1.2.1",
   "main": "dist/index.cjs",
   "module": "dist/index.js",

@@ -1,4 +1,4 @@
-# @blnkfc/react-modal-manager
+# @qnit/react-modal-manager
 
 A simple tool for organized modals in your application.
 

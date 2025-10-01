@@ -21,7 +21,7 @@ import { ModalProvider } from 'react-modal-provider';
 3. Import useModalQueue hook in the component where you whant your modal to be:
 
 ```
-import { useModalQueue } from 'react-modal-provider';
+import { useModalQueue } from '@qnit/react-modal-manager';
 
 const { modals, queueModal } = useModalQueue()
 ```

@@ -8,7 +8,7 @@ export type ModalContentCombined = {
   content: ModalContent;
   onClose?: (value?: any) => any;
   options?: ModalOptions;
-}
+};
 
 export interface ModalQueueItem {
   id: string;
@@ -19,23 +19,34 @@ export interface ModalQueueItem {
 }
 
 export const useModalContext = (): {
-  queueModal: ({ content, onClose, options }: { content: ModalContent; onClose?: (value?: any) => any; options?: ModalOptions }) => void;
+  queueModal: ({
+    content,
+    onClose,
+    options,
+  }: {
+    content: ModalContent;
+    onClose?: (value?: any) => any;
+    options?: ModalOptions;
+  }) => void;
   currentModals: ModalQueueItem[];
+  closeAllModals: () => void;
 } => {
   const [activeModals, setActiveModals] = useSessionStorage('modals', []);
 
-  console.log('activeModals', activeModals);
+  // console.log('activeModals', activeModals);
 
   /** Closes a modal with the given ID.
    * @param id The ID of the modal to close.
    */
   const closeGivenModal = (id: string) => {
     console.log('closeGivenModal', id);
-    
+
     setActiveModals(activeModals.filter((am: ModalQueueItem) => am.id !== id));
   };
 
-
+  const closeAllModals = () => {
+    setActiveModals([]);
+  };
 
   /**
    * Adds a new modal to the queue.
@@ -58,12 +69,9 @@ export const useModalContext = (): {
 
     const updatedModals = [...activeModals, newModal];
 
-    console.log('updatedModals', updatedModals);
+    // console.log('updatedModals', updatedModals);
     setActiveModals(updatedModals);
   };
 
-
-
-
-  return { queueModal, currentModals: activeModals };
+  return { queueModal, currentModals: activeModals, closeAllModals };
 };

@@ -6,6 +6,8 @@ export type ModalGeneric = {
 
 export type position = 'center' | 'top' | 'bottom' | 'left' | 'right' | 'top-left' | 'top-right' | 'bottom-left' | 'bottom-right';
 
+export type animation = 'fadeIn' | 'slideUp' | 'slideDown' | 'scaleUp'
+  
 export type ModalOptions = {
   backgroundAlpha?: number; // Opacity of the background overlay (0 to 1)
   backgroundColor?: string; // Color of the background overlay
@@ -16,6 +18,7 @@ export type ModalOptions = {
   padding?: string | number; // Padding inside the modal window
   margin?: string | number; // Margin around the modal window
   boxShadow?: string; // Box shadow for the modal window
-  showCloseButton?: boolean; // Whether to show a close button
+  hideCloseButton?: boolean; // Whether to show a close button
+  popupAnimation?: animation; // Animation when the modal appears
 }
 

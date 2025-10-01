@@ -1,6 +1,6 @@
 // import React from 'react';
 import './DefaultModal.css';
-import type { ModalGeneric, position } from '../interfaces/types';
+import type { animation, ModalGeneric, position } from '../interfaces/types';
 
 const position: Record<position | 'default', React.CSSProperties> = {
   center: {
@@ -55,8 +55,15 @@ const position: Record<position | 'default', React.CSSProperties> = {
   },
 };
 
-export const DefaultModalWindow = ({ content, onClose, styles, options }: ModalGeneric & { content: string }) => {
+const animations: Record<animation | 'default', string> = {
+  fadeIn: 'fadeIn 0.3s',
+  slideUp: 'slideUp 0.3s',
+  slideDown: 'slideDown 0.3s',
+  scaleUp: 'scaleUp 0.3s',
+  default: 'fadeIn 0.3s',
+}
 
+export const DefaultModalWindow = ({ content, onClose, styles, options }: ModalGeneric & { content: string }) => {
   const traverseStyle = (value: string | number | undefined, defaultValue: string) => {
     if (value === undefined) return defaultValue;
     if (typeof value === 'number') return `${value}px`;
@@ -76,6 +83,7 @@ export const DefaultModalWindow = ({ content, onClose, styles, options }: ModalG
           width: '100%',
           height: '100%',
           pointerEvents: 'auto',
+          animation: 'fadeIn 0.3s',
         }}
       ></div>
       <div
@@ -95,10 +103,16 @@ export const DefaultModalWindow = ({ content, onClose, styles, options }: ModalG
           minHeight: '100px',
           width: traverseStyle(options?.width, 'auto'),
           height: traverseStyle(options?.height, 'auto'),
+          animation: animations[options?.popupAnimation || 'default'],
           ...position[options?.position || 'default'],
           ...styles,
         }}
       >
+        {options?.hideCloseButton ? null : (
+          <div onClick={onClose} className="default-modal-close-btn">
+            &#10006;
+          </div>
+        )}
         {content}
       </div>
     </>

@@ -9,6 +9,8 @@ export default defineConfig({
   external: ["react", "react-dom"], // don’t bundle React
   loader: {
     ".ts": "ts",
-    ".tsx": "tsx" // ✅ Ensures tsx files are handled correctly
-  }
+    ".tsx": "tsx",
+    ".css": "css",
+  },
+  injectStyle: true, 
 });

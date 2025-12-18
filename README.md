@@ -42,8 +42,21 @@ const showModal2 = () => {
   )
   queueModal({ content: newModal, onClose: () => { console.log('Modal closed'); } });
 }
-
 ```
+5. You can pass an onClose callback to the queueModal function, callback will execute before closing the modal. Async callbacks are supported and closing resolves after the callback.
+
+## Debugging with provider options
+1. Universal Logs.
+```false``` by default. Pass as ```true``` to see logs, warning and errors from undergoing processes and more info about your modals.
+```
+<ModalProvider options={{ universalLogs: true }}>
+```
+2. RethrowOnCloseError.
+```true``` by default. Pass as ```false``` to execute closing logic despite the errors in your onClose callback.
+```
+<ModalProvider options={{ universalLogs: true, rethrowOnCloseError: false }}>
+```
+
 ## Customization
 Excluding custom modals, you can customise styles of the modal differently:
 

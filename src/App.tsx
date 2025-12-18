@@ -3,7 +3,8 @@ import './App.css'
 import { useModalQueue } from './components/ModalProvider';
 
 function App() {
-  const { modals, queueModal } = useModalQueue()
+  // const { modals, queueModal } = useModalQueue()
+  const { queueModal } = useModalQueue()
 
 
   // const addModal = () => {

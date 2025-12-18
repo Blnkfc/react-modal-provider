@@ -3,7 +3,7 @@ import type { ModalGeneric } from "../interfaces/types";
 
 
 
-export const DefaultOverrideExample: React.FC<PropsWithChildren<{} & ModalGeneric>> = ({ children, onClose, styles }) => {
+export const DefaultOverrideExample: React.FC<PropsWithChildren<{} & ModalGeneric>> = ({ children, onClose }) => {
   return (
     <div onClick={() => console.log('aaaaaaaaa')} style={{background: 'teal'}}>
         <h1 onClick={onClose} >Default Override Example</h1>

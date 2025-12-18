@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect } from 'react';
 import { useSessionStorage } from './useSessionStorage';
 import type { ModalOptions } from '../interfaces/types';
 import type { ModalProviderOptions } from '../components/ModalProvider';

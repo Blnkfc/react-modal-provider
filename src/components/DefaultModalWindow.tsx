@@ -61,7 +61,7 @@ const animations: Record<animation | 'default', string> = {
   slideDown: 'slideDown 0.3s',
   scaleUp: 'scaleUp 0.3s',
   default: 'fadeIn 0.3s',
-}
+};
 
 export const DefaultModalWindow = ({ content, onClose, styles, options }: ModalGeneric & { content: string }) => {
   const traverseStyle = (value: string | number | undefined, defaultValue: string) => {
@@ -83,7 +83,7 @@ export const DefaultModalWindow = ({ content, onClose, styles, options }: ModalG
           width: '100%',
           height: '100%',
           pointerEvents: 'auto',
-          animation: 'fadeIn 0.3s',
+          animation: options?.reduceAnimation ? 'none' : 'fadeIn 0.3s',
         }}
       ></div>
       <div
@@ -103,18 +103,18 @@ export const DefaultModalWindow = ({ content, onClose, styles, options }: ModalG
           minHeight: '100px',
           width: traverseStyle(options?.width, 'auto'),
           height: traverseStyle(options?.height, 'auto'),
-          animation: animations[options?.popupAnimation || 'default'],
+          animation: options?.reduceAnimation ? 'none' : animations[options?.popupAnimation || 'default'],
           ...position[options?.position || 'default'],
           ...styles,
         }}
       >
         {options?.hideCloseButton ? null : (
-          <div onClick={onClose} className="default-modal-close-btn">
+          <div onClick={onClose} className={`${options?.reduceAnimation ? 'default-modal-close-btn rmp-reduce-animation' : 'default-modal-close-btn'}`}>
             &#10006;
           </div>
         )}
         {content}
-      </div>
+      </div> 
     </>
   );
 };

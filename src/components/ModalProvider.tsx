@@ -3,25 +3,26 @@ import { useModalContext, type ModalContent, type ModalQueueItem } from '../hook
 import { DefaultModalWindow } from './DefaultModalWindow';
 import type { ModalGeneric, ModalOptions } from '../interfaces/types';
 
+export interface ModalProviderOptions {
+  universalLogs?: boolean
+  rethrowOnCloseError?: boolean
+}
+
 export interface ModalProviderProps {
   modals: ModalQueueItem[];
   queueModal: ({ content, onClose, options }: { content: ModalContent; onClose?: (value?: any) => any; options?: ModalOptions }) => void;
+  options?: ModalProviderOptions
 }
 
 const ModalContext = createContext<ModalProviderProps | undefined>(undefined);
 
-export const ModalProvider = ({ children, styles, ModalOverride }: { children: React.ReactNode; styles?: React.CSSProperties; ModalOverride?: React.ComponentType<PropsWithChildren<ModalGeneric>> }) => {
-  const { currentModals, queueModal } = useModalContext();
-  console.log(
-    'currentModals',
-    currentModals,
-    Array.isArray(currentModals),
-    currentModals.length > 0,
-    currentModals.length
-  );
+export const ModalProvider = ({ children, styles, ModalOverride, options }: { children: React.ReactNode; styles?: React.CSSProperties; ModalOverride?: React.ComponentType<PropsWithChildren<ModalGeneric>>; options?: ModalProviderOptions }) => {
+  const { currentModals, queueModal } = useModalContext({options});
+
+
 
   return (
-    <ModalContext.Provider value={{ modals: currentModals, queueModal }}>
+    <ModalContext.Provider value={{ modals: currentModals, queueModal, options }}>
       <div
         id="modal-root"
         style={{

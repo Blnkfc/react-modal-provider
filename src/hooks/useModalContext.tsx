@@ -1,6 +1,7 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useSessionStorage } from './useSessionStorage';
 import type { ModalOptions } from '../interfaces/types';
+import type { ModalProviderOptions } from '../components/ModalProvider';
 
 export type ModalContent = React.ReactNode | string;
 
@@ -18,7 +19,11 @@ export interface ModalQueueItem {
   options?: ModalOptions;
 }
 
-export const useModalContext = (): {
+export const useModalContext = ({
+  options,
+}: {
+  options?: ModalProviderOptions;
+}): {
   queueModal: ({
     content,
     onClose,
@@ -32,19 +37,44 @@ export const useModalContext = (): {
   closeAllModals: () => void;
 } => {
   const [activeModals, setActiveModals] = useSessionStorage('modals', []);
+  const { universalLogs = false, rethrowOnCloseError = true } = options || {};
+  console.log('activeModals', activeModals);
 
-  // console.log('activeModals', activeModals);
+  useEffect(() => {
+    if(universalLogs)
+    console.log('[UPDATED MODAL LIST]-->', activeModals);
+  }, [activeModals])
 
   /** Closes a modal with the given ID.
    * @param id The ID of the modal to close.
    */
-  const closeGivenModal = (id: string) => {
-    console.log('closeGivenModal', id);
-
-    setActiveModals(activeModals.filter((am: ModalQueueItem) => am.id !== id));
-  };
+  const closeGivenModal = useCallback(
+    (id: string) => {
+      console.log('fireclose');
+      
+      setActiveModals((prev: ModalQueueItem[]) => {
+        if (universalLogs) {
+          console.log('[CLOSE MODAL]-->', id);
+          if (prev.length === 0) {
+            console.error('[CLOSE MODAL]-->', `No modals to close. List of current active modals is empty.`);
+          }
+          if (!prev.some((am) => am.id === id)) {
+            console.error('[CLOSE MODAL]-->', `Modal ${id} not found.`);
+          }
+        }
+        return prev.filter((am: ModalQueueItem) => am.id !== id);
+      });
+      // setActiveModals(activeModals.filter((am: ModalQueueItem) => am.id !== id));
+    },
+    [activeModals, universalLogs, setActiveModals]
+  );
 
   const closeAllModals = () => {
+    if (universalLogs) {
+      if (activeModals.length === 0) {
+        console.warn('[CLOSE ALL MODALS]-->', 'No modals to close.');
+      }
+    }
     setActiveModals([]);
   };
 
@@ -55,22 +85,50 @@ export const useModalContext = (): {
    * @param options Optional settings for modal appearance and behavior.
    */
   const queueModal = ({ content, onClose, options }: ModalContentCombined) => {
-    const id = Date.now().toString();
-    const newModal: ModalQueueItem = {
-      id: id,
-      modal: { content, onClose },
-      layer: activeModals.length,
-      onClose: () => {
-        onClose?.();
+    const id = crypto.randomUUID();
+    let closeGuard = false;
+    const safeOnClose = async () => {
+      if (closeGuard) return;
+      closeGuard = true;
+      try {
+        await onClose?.();
+      } catch (error) {
+        console.error(`[ERROR IN MODAL ${id} onClose CALLBACK]:`, error);
+        console.warn('Consider enabling universalLogs in ModalProvider options for more details.');
+        if (rethrowOnCloseError) {
+          throw error;
+        }
+      } finally {
         closeGivenModal(id);
-      },
-      options: options,
+      }
     };
 
-    const updatedModals = [...activeModals, newModal];
+    setActiveModals((prev: ModalQueueItem[]) => {
+      const newModal: ModalQueueItem = {
+        id: id,
+        modal: { content, onClose },
+        layer: prev.length,
+        onClose: safeOnClose,
+        options: options,
+      }
+      if (universalLogs) {
+        console.log('[NEW MODAL ADDED]-->', newModal);
+      }
+      return [...prev, newModal];
+    })
 
-    // console.log('updatedModals', updatedModals);
-    setActiveModals(updatedModals);
+    // const newModal: ModalQueueItem = {
+    //   id: id,
+    //   modal: { content, onClose },
+    //   layer: activeModals.length,
+    //   onClose: safeOnClose,
+    //   options: options,
+    // };
+
+    // const updatedModals = [...activeModals, newModal];
+
+    // // console.log('updatedModals', updatedModals);
+    // setActiveModals(updatedModals);
   };
 
   return { queueModal, currentModals: activeModals, closeAllModals };

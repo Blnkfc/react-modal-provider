@@ -20,5 +20,6 @@ export type ModalOptions = {
   boxShadow?: string; // Box shadow for the modal window
   hideCloseButton?: boolean; // Whether to show a close button
   popupAnimation?: animation; // Animation when the modal appears
+  reduceAnimation?: boolean; // Shutting off animations
 }
 

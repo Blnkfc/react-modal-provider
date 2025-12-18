@@ -33,6 +33,10 @@
   transform: rotate(-90deg);
 }
 
+.rmp-reduce-animation{
+  animation: none !important;
+}
+
 @keyframes fadeIn {
   from {
     opacity: 0;

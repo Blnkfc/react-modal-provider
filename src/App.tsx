@@ -22,7 +22,7 @@ function App() {
      HELLO
      <div onClick={() => {
       // addModal();
-      queueModal({content: 'hihihi', onClose: () => { console.log('Modal closed') }, options: {popupAnimation: 'scaleUp'}});
+      queueModal({content: '', onClose: () => { console.log('Modal closed') }, options: {popupAnimation: 'scaleUp', reduceAnimation: true}});
      }}>
        Open Modal
      </div>
